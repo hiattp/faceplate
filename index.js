@@ -17,8 +17,10 @@ var Faceplate = function(options) {
     return function(req, res, next) {
       console.log("in middleware function");
       if (req.body.signed_request) {
+        console.log("in signed_request part");
         self.parse_signed_request(req.body.signed_request, function(decoded_signed_request) {
           req.facebook = new FaceplateSession(self, decoded_signed_request);
+          console.log(req.facebook);
           next();
         });
       } else if (req.cookies["fbsr_" + self.app_id]) {
@@ -93,6 +95,7 @@ var FaceplateSession = function(plate, signed_request) {
 
   this.plate = plate;
   if (signed_request) {
+      console.log("detected signed request, adding token to req")
       this.token  = signed_request.access_token;
       this.signed_request = signed_request;
   }
