@@ -13,7 +13,9 @@ var Faceplate = function(options) {
   this.secret  = this.options.secret;
 
   this.middleware = function() {
+    console.log("hitting first part of middleware");
     return function(req, res, next) {
+      console.log("in middleware function");
       if (req.body.signed_request) {
         self.parse_signed_request(req.body.signed_request, function(decoded_signed_request) {
           req.facebook = new FaceplateSession(self, decoded_signed_request);
