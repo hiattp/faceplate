@@ -13,16 +13,16 @@ var Faceplate = function(options) {
   this.secret  = this.options.secret;
 
   this.middleware = function() {
-    var cookieID = "fbsr_" + self.app_id;
+    var cookieKey = "fbsr_" + self.app_id;
     return function(req, res, next) {
       if (req.body.signed_request) {
-        if(req.session[cookieID] != req.body.signed_request) req.session[cookieID] = req.body.signed_request;
+        if(req.session[cookieKey] != req.body.signed_request) req.session[cookieKey] = req.body.signed_request;
         self.parse_signed_request(req.body.signed_request, function(decoded_signed_request) {
           req.facebook = new FaceplateSession(self, decoded_signed_request);
           next();
         });
-      } else if (req.session[cookieID]) {
-        self.parse_signed_request(req.session[cookieID], function(decoded_signed_request) {
+      } else if (req.session[cookieKey]) {
+        self.parse_signed_request(req.session[cookieKey], function(decoded_signed_request) {
           req.facebook = new FaceplateSession(self, decoded_signed_request);
           next();
         });
@@ -90,7 +90,9 @@ var Faceplate = function(options) {
 var FaceplateSession = function(plate, signed_request) {
 
   var self = this;
+  
   this.plate = plate;
+  
   if (signed_request) {
       this.token  = signed_request.oauth_token;
       this.signed_request = signed_request;
