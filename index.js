@@ -57,7 +57,7 @@ var Faceplate = function(options) {
     }
 
     if (data.oauth_token) {
-      cb(data);
+      cb(qs.parse(data));
       return;
     }
 
@@ -88,9 +88,11 @@ var Faceplate = function(options) {
 var FaceplateSession = function(plate, signed_request) {
 
   var self = this;
-
+  console.log(signed_request);
   this.plate = plate;
   if (signed_request) {
+      console.log("in token assigning part");
+      console.log("assigning token as: " + signed_request.oauth_token);
       this.token  = signed_request.oauth_token;
       this.signed_request = signed_request;
   }
