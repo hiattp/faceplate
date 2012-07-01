@@ -90,6 +90,7 @@ var Faceplate = function(options) {
 }
 
 var FaceplateSession = function(plate, signed_request) {
+  console.log("creating new fplate session");
 
   var self = this;
 
