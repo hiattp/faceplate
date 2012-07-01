@@ -103,7 +103,6 @@ var FaceplateSession = function(plate, signed_request) {
   }
 
   this.me = function(cb) {
-    console.log(self.token);
     if (self.token) {
       self.get('/me', function(me) {
         cb(me);
@@ -123,11 +122,15 @@ var FaceplateSession = function(plate, signed_request) {
       params.access_token = self.token;
 
     try {
+      console.log(params);
       restler.get('https://graph.facebook.com' + path, { query: params }).on('complete', function(data) {
+        console.log("success");
         var result = JSON.parse(data);
+        console.dir(result);        
         cb(null, result);
       });
     } catch (err) {
+      console.log(err);
       cb(err);
     }
   }
