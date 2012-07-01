@@ -13,14 +13,10 @@ var Faceplate = function(options) {
   this.secret  = this.options.secret;
 
   this.middleware = function() {
-    console.log("hitting first part of middleware");
     return function(req, res, next) {
-      console.log("in middleware function");
       if (req.body.signed_request) {
-        console.log("in signed_request part");
         self.parse_signed_request(req.body.signed_request, function(decoded_signed_request) {
           req.facebook = new FaceplateSession(self, decoded_signed_request);
-          console.log(req.facebook);
           next();
         });
       } else if (req.cookies["fbsr_" + self.app_id]) {
@@ -54,15 +50,13 @@ var Faceplate = function(options) {
     if (sig !== expected_sig)
       throw("bad signature");
       
-    console.log("in signed request bit, trying to get data out of it");
-    console.dir(data);
     // not logged in or not authorized
     if (!data.user_id) {
       cb(data);
       return;
     }
 
-    if (data.access_token) {
+    if (data.oauth_token) {
       cb(data);
       return;
     }
@@ -92,15 +86,12 @@ var Faceplate = function(options) {
 }
 
 var FaceplateSession = function(plate, signed_request) {
-  console.log("creating new fplate session");
-  console.log(signed_request);
 
   var self = this;
 
   this.plate = plate;
   if (signed_request) {
-      console.log("detected signed request, adding token to req")
-      this.token  = signed_request.access_token;
+      this.token  = signed_request.oauth_token;
       this.signed_request = signed_request;
   }
 
