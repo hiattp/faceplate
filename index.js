@@ -53,7 +53,9 @@ var Faceplate = function(options) {
 
     if (sig !== expected_sig)
       throw("bad signature");
-
+      
+    console.log("in signed request bit, trying to get data out of it");
+    console.dir(data);
     // not logged in or not authorized
     if (!data.user_id) {
       cb(data);
@@ -91,6 +93,7 @@ var Faceplate = function(options) {
 
 var FaceplateSession = function(plate, signed_request) {
   console.log("creating new fplate session");
+  console.log(signed_request);
 
   var self = this;
 
