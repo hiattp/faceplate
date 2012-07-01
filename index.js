@@ -57,7 +57,7 @@ var Faceplate = function(options) {
     }
 
     if (data.oauth_token) {
-      cb(qs.parse(data));
+      cb(data);
       return;
     }
 
