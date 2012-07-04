@@ -107,7 +107,8 @@ var FaceplateSession = function(plate, signed_request) {
   this.me = function(cb) {
     if (self.token) {
       self.get('/me', function(err,me) {
-        cb(me);
+        if(err) cb(err);
+        cb(null,me);
       });
     } else {
       cb();
